@@ -21,6 +21,7 @@ namespace WorldBlog
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
             services.AddEntityFramework()
                 .AddDbContext<WorldBlogContext>(options =>
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
@@ -28,6 +29,12 @@ namespace WorldBlog
 
         public void Configure(IApplicationBuilder app)
         {
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
             app.Run(async (context) =>
             {
